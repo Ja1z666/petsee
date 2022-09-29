@@ -1,19 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
-import { Display, Container, Title } from '../../styles/MainStyles';
-import MapView from 'react-native-maps';
+import { createStackNavigator } from '@react-navigation/stack';
+import Main from './Main';
+import PetInfo from './PetInfo';
+
+const Stack = createStackNavigator();
 
 export default function Map() {
   return (
-    <Display>
-      <MapView style={styles.map} showsUserLocation={true} followsUserLocation={true} />
-    </Display>
+    <Stack.Navigator>
+      <Stack.Screen name="Main" component={Main}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen name="PetInfo" component={PetInfo} />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-});
