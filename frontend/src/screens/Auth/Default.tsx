@@ -1,10 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from './Main';
-import PetInfo from './PetInfo';
+import Verification from './Verification';
 
 const Stack = createStackNavigator();
 
-export default function Map() {
+export default function Auth() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Main" component={Main}
@@ -12,7 +12,7 @@ export default function Map() {
           headerShown: false
         }}
       />
-      <Stack.Screen name="PetInfo" component={PetInfo} />
+      <Stack.Screen name="Verification" component={Verification} />
     </Stack.Navigator>
   );
 }

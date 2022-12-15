@@ -1,59 +1,78 @@
-import { View, TouchableOpacity } from 'react-native';
-import styled from "styled-components/native";
-import { Display, Container, Title, Block, ProfileBackground, ProfileAvatar, ProfileImg } from '../../styles/MainStyles';
-import { SettingsSvgComponent } from '../../icons/index';
+import { gql, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { Display, Container, Title } from '../../styles/MainStyles';
+import ProfileBlock from './components/Profile';
+import Pet from "./components/Pet";
+import * as SecureStore from 'expo-secure-store';
+import { FlatList } from "react-native";
 
-const ProfileView = styled.View`
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
+const GET_USER = gql`
+  query GetUser($phone: String!){
+    GetUser(input: {phone: $phone}){
+      id
+      phone
+      bio{
+        email
+        name
+        surname
+      }
+      posts{
+        name
+        color
+        description
+      }
+    }
+  }
 `;
 
-const ProfileConteiner = styled.View`
-  padding: 10px;
-`;
-
-const ProfileTitle = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
+interface UserType{
+  id: number;
+  phone: string;
+  bio: {
+    email: string;
+    name: string;
+    surname: string;
+  }
+  posts: [
+    {
+      name: string;
+      color: string;
+      description: string;
+    }
+  ]
+}
 
 export default function Profile({ navigation }:any) {
+  const [phone, setPhone] = useState<string | null>(null);
+  
+  useEffect(() => {
+    (async function(){
+      setPhone(await SecureStore.getItemAsync('user'));
+    })();
+  }, []);
+
+  const { loading, error, data } = useQuery(GET_USER, {
+    variables: {
+      phone: phone
+    }
+  });
+
+  if (loading) return <Title>Loading...</Title>;
+  if (error) return <Title>Error! {error.message}</Title>;
+
+  let user:UserType = data.GetUser;
+
   return (
     <Display>
       <Container>
-        <Block>
-          <View>
-            <ProfileBackground />
-          </View>
-          <ProfileConteiner>
-          <ProfileView>
-            <ProfileAvatar>
-              <ProfileImg source={require('../../../assets/avatar.jpg')}/>
-            </ProfileAvatar>
-            <ProfileTitle>
-              <Title style={{ paddingRight: 10}}>Mihails Pavlovs</Title>
-              <TouchableOpacity onPress={() => navigation.navigate('ProfileEdit')}>
-                <SettingsSvgComponent />
-              </TouchableOpacity>
-            </ProfileTitle>
-          </ProfileView>
-          <View style={{ marginTop: 30 }}>
-            <View style={{ marginBottom: 10 }}>
-              <Title style={{ fontSize: 20 }}>E-mail</Title>
-              <Title style={{ fontSize: 16, fontWeight: 'normal', color: '#4E4E4E' }}>mishaenderman2003@gmail.com</Title>
-            </View>
-            <View>
-              <Title style={{ fontSize: 20 }}>Phone</Title>
-              <Title style={{ fontSize: 16, fontWeight: 'normal', color: '#4E4E4E' }}>+371 23994521</Title>
-            </View>
-          </View>
-          </ProfileConteiner>
-        </Block>
+        <ProfileBlock navigation={navigation} user={user} />
         <Title style={{ marginTop: 20, marginBottom: 5, marginLeft: 15 }}>Missing pets</Title>
-        <Block style={{ height: 200, justifyContent: 'center', alignItems: 'center' }}>
-          <Title style={{ fontSize: 16, fontWeight: 'normal', color: '#4E4E4E' }}>Empty</Title>
-        </Block>
+        <FlatList
+          data={user.posts}
+          renderItem={pet => (
+            <Pet navigation={navigation} pet={pet.item}/>
+          )}
+        />
       </Container>
     </Display>
   );

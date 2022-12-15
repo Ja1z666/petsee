@@ -1,3 +1,4 @@
-export { default as Home } from './Home/Home';
-export { default as Map } from './Map/Map';
-export { default as Profile } from './Profile/Profile';
+export { default as Auth } from './Auth/Default';
+export { default as Home } from './Home/Default';
+export { default as Map } from './Map/Default';
+export { default as Profile } from './Profile/Default';

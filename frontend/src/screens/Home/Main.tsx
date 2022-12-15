@@ -6,8 +6,8 @@ export default function Main({ navigation }:any) {
     <Display>
       <Container>
         <Title>Home</Title>
-        <TouchableOpacity onPress={() => navigation.navigate('PetInfo')}>
-          <Title style={{color: '#1d92ff'}}>Info</Title>
+        <TouchableOpacity onPress={() => navigation.navigate('AddPet')}>
+          <Title style={{color: '#1d92ff'}}>Add missing pet</Title>
         </TouchableOpacity>
       </Container>
     </Display>

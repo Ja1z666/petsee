@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from './Main';
-import PetInfo from './PetInfo';
+import AddPet from './AddPet';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +12,7 @@ export default function Home() {
           headerShown: false
         }}
       />
-      <Stack.Screen name="PetInfo" component={PetInfo} />
+      <Stack.Screen name="AddPet" options={{ title: 'Add missing pet' }} component={AddPet} />
     </Stack.Navigator>
   );
 }

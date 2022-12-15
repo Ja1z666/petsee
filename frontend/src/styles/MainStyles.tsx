@@ -15,6 +15,18 @@ export const Title = styled.Text`
     font-weight: 700;
 `;
 
+export const ButtonText = styled.Text`
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 500;
+`;
+
+export const Text = styled.Text`
+    color: #000000;
+    font-size: 18px;
+    font-weight: 400;
+`;
+
 export const Block = styled.View`
     width: 100%;
     background: #FFFFFF;
@@ -47,4 +59,18 @@ export const ProfileImg = styled.Image`
     width: 92px;
     height: 92px;
     border-radius: 100px;
+`;
+
+export const PetBlock = styled.View`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const PetColor = styled.View`
+    width: 6px;
+    height: 50px;
+    background-color: #000000;
+    border-radius: 100px;
+    margin: 0px 5px;
 `;
